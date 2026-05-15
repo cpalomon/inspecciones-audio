@@ -17,38 +17,55 @@
 
   <script>
     let mediaRecorder;
-
     let chunks = [];
 
     async function startRecording() {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-      mediaRecorder = new MediaRecorder(stream);
+        let options = {};
 
-      mediaRecorder.ondataavailable = function(e) {
-        chunks.push(e.data);
-      };
+        if (MediaRecorder.isTypeSupported('audio/webm')) {
+          options.mimeType = 'audio/webm';
+        } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+          options.mimeType = 'audio/mp4';
+        } else if (MediaRecorder.isTypeSupported('audio/ogg')) {
+          options.mimeType = 'audio/ogg';
+        }
 
-      mediaRecorder.onstop = function() {
-        const blob = new Blob(chunks, { type: 'audio/webm' });
-        const audioURL = URL.createObjectURL(blob);
-
-        document.getElementById("audioPlayback").src = audioURL;
-
+        mediaRecorder = new MediaRecorder(stream, options);
 
         chunks = [];
-      };
 
-      mediaRecorder.start();
-      document.getElementById("status").innerText = "Grabando...";
+        mediaRecorder.ondataavailable = function(e) {
+          if (e.data.size > 0) {
+            chunks.push(e.data);
+          }
+        };
+
+        mediaRecorder.onstop = function() {
+          const blob = new Blob(chunks, { type: chunks[0].type });
+          const audioURL = URL.createObjectURL(blob);
+
+          document.getElementById("audioPlayback").src = audioURL;
+          document.getElementById("status").innerText = "Grabación lista ✅";
+        };
+
+        mediaRecorder.start();
+        document.getElementById("status").innerText = "Grabando...";
+      } catch (error) {
+        console.error(error);
+        document.getElementById("status").innerText = "Error al acceder al micrófono 🚨";
+      }
     }
 
     function stopRecording() {
-      mediaRecorder.stop();
-      document.getElementById("status").innerText = "Grabación detenida";
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+        document.getElementById("status").innerText = "Procesando audio...";
+      }
     }
   </script>
 
 </body>
 </html>
-
