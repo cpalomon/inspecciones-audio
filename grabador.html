@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Grabador de Inspecciones</title>
+</head>
+<body>
+
+  <h2>Grabación de inspección EPP</h2>
+
+  <button onclick="startRecording()">🎤 Iniciar Grabación</button>
+  <button onclick="stopRecording()">⛔ Detener</button>
+
+  <p id="status"></p>
+
+  <audio id="audioPlayback" controls></audio>
+
+  <script>
+    let mediaRecorder;
+
+    let chunks = [];
+
+    async function startRecording() {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = function(e) {
+        chunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = function() {
+        const blob = new Blob(chunks, { type: 'audio/webm' });
+        const audioURL = URL.createObjectURL(blob);
+
+        document.getElementById("audioPlayback").src = audioURL;
+
+
+        chunks = [];
+      };
+
+      mediaRecorder.start();
+      document.getElementById("status").innerText = "Grabando...";
+    }
+
+    function stopRecording() {
+      mediaRecorder.stop();
+      document.getElementById("status").innerText = "Grabación detenida";
+    }
+  </script>
+
+</body>
+</html>
+
