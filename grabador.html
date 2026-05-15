@@ -2,80 +2,141 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grabador de Inspecciones</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+
+        h3 {
+            font-size: 16px;
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn-start {
+            background-color: #28a745;
+        }
+
+        .btn-stop {
+            background-color: #dc3545;
+        }
+
+        .btn-download {
+            background-color: #007bff;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        #status {
+            margin: 15px 0;
+            font-size: 16px;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        }
+
+    </style>
 </head>
 <body>
 
-<h2>🎤 Grabación de inspección EPP</h2>
+<div class="container">
 
-<br>
+    <h1>🎤 Inspección EPP</h1>
+    <h3>Ambiente y Soluciones SAS</h3>
 
-<button onclick="startRecording()">▶️ Iniciar Grabación</button>
-<button onclick="stopRecording()">⛔ Detener</button>
+    <div class="card">
 
-<p id="status">Estado: esperando...</p>
+        <button class="btn btn-start" onclick="startRecording()">▶️ Iniciar Grabación</button>
 
-<br>
+        <button class="btn btn-stop" onclick="stopRecording()">⛔ Detener</button>
 
-<audio id="audioPlayback" controls></audio>
+        <p id="status">Estado: esperando...</p>
+
+        <audio id="audioPlayback" controls></audio>
+
+        <a id="downloadLink" style="display:none;">
+            <button class="btn btn-download">⬇️ Descargar audio</button>
+        </a>
+
+    </div>
+
+</div>
 
 <script>
 let mediaRecorder;
 let chunks = [];
 
 async function startRecording() {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-        // ✅ Formato estable para Android
-        const options = { mimeType: 'audio/webm;codecs=opus' };
+    const options = { mimeType: 'audio/webm;codecs=opus' };
+    mediaRecorder = new MediaRecorder(stream, options);
 
-        mediaRecorder = new MediaRecorder(stream, options);
+    chunks = [];
 
-        chunks = [];
+    mediaRecorder.ondataavailable = e => {
+        if (e.data.size > 0) {
+            chunks.push(e.data);
+        }
+    };
 
-        mediaRecorder.ondataavailable = (e) => {
-            if (e.data.size > 0) {
-                chunks.push(e.data);
-            }
-        };
+    mediaRecorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'audio/webm' });
 
-        mediaRecorder.onstop = async () => {
-            const blob = new Blob(chunks, { type: 'audio/webm' });
+        const audioURL = URL.createObjectURL(blob);
+        document.getElementById("audioPlayback").src = audioURL;
 
-            // ✅ Reproducir
-            const audioURL = URL.createObjectURL(blob);
-            document.getElementById("audioPlayback").src = audioURL;
+        const link = document.getElementById("downloadLink");
+        link.href = audioURL;
+        link.download = "inspeccion_" + Date.now() + ".webm";
+        link.style.display = "block";
 
-            document.getElementById("status").innerText = "📤 Enviando audio...";
+        document.getElementById("status").innerText = "✅ Listo para descargar";
+    };
 
-            // ✅ Enviar al servidor
-            const formData = new FormData();
-            formData.append("file", blob, "audio.webm");
-
-            try {
-                const response = await fetch("/upload", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const result = await response.json();
-
-                console.log(result);
-
-                document.getElementById("status").innerText = "✅ Audio guardado correctamente";
-            } catch (error) {
-                console.error(error);
-                document.getElementById("status").innerText = "❌ Error al guardar";
-            }
-        };
-
-        mediaRecorder.start();
-        document.getElementById("status").innerText = "🔴 Grabando...";
-    } catch (error) {
-        console.error(error);
-        document.getElementById("status").innerText = "❌ Error al acceder al micrófono";
-    }
+    mediaRecorder.start();
+    document.getElementById("status").innerText = "🔴 Grabando...";
 }
 
 function stopRecording() {
