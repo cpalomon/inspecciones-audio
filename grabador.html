@@ -1,100 +1,168 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grabador de Inspecciones</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grabador de Inspecciones</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
 
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
-        h1 {
-            font-size: 26px;
-            margin-bottom: 5px;
-        }
+h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
 
-        h3 {
-            font-size: 16px;
-            color: #666;
-            margin-top: 0;
-            margin-bottom: 20px;
-        }
+h3 {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 15px;
+}
 
-        .btn {
-            width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            border: none;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            color: white;
-            cursor: pointer;
-        }
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+}
 
-        .btn-start {
-            background-color: #28a745;
-        }
+/* ✅ GUÍA */
+.guia {
+    text-align: left;
+    font-size: 13px;
+    margin-bottom: 15px;
+    background: #f9fafb;
+    padding: 10px;
+    border-radius: 10px;
+}
 
-        .btn-stop {
-            background-color: #dc3545;
-        }
+.guia h3 {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
 
-        .btn-download {
-            background-color: #007bff;
-        }
+.guia h4 {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
 
-        .btn:active {
-            transform: scale(0.98);
-        }
+.guia ul {
+    padding-left: 18px;
+    margin: 5px 0;
+}
 
-        #status {
-            margin: 15px 0;
-            font-size: 16px;
-        }
+.guia li {
+    margin-bottom: 4px;
+}
 
-        audio {
-            width: 100%;
-            margin-top: 15px;
-        }
+/* ✅ BOTONES */
+.btn {
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-        }
+.btn-start {
+    background-color: #28a745;
+}
 
-    </style>
+.btn-stop {
+    background-color: #dc3545;
+}
+
+.btn-download {
+    background-color: #007bff;
+    padding: 12px;
+    width: 100%;
+}
+
+.btn-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.small {
+    padding: 10px;
+    font-size: 14px;
+    flex: 1;
+}
+
+#status {
+    margin: 12px 0;
+    font-size: 14px;
+}
+
+audio {
+    width: 100%;
+    margin-top: 15px;
+}
+
+</style>
 </head>
+
 <body>
 
 <div class="container">
 
-    <h1>INSPECCION DE EPP</h1>
+    <h1>INSPECCIÓN AREA HSE</h1>
     <h3>Ambiente y Soluciones SAS</h3>
 
     <div class="card">
 
-        <button class="btn btn-start" onclick="startRecording()">▶️ Iniciar Grabación</button>
+        <!--GUÍA DE INSPECCIÓN -->
+        <div class="guia">
+            <h3>📝 GUÍA DE GRABACIÓN</h3>
 
-        <button class="btn btn-stop" onclick="stopRecording()">⛔ Detener </button>
+            <ul>
+                <li>📅 Fecha</li>
+                <li>⏰ Hora</li>
+                <li>🔍 Tipo de inspección</li>
+                <li>📍 Ubicación</li>
+                <li>🏢 Área (Operativa)</li>
+                <li>🪪 Inspector (Documento)</li>
+                <li>👷🏻‍♀️ Empleado (Documento)</li>
+            </ul>
+
+            <h4>Indicar por EPP (Estado, Uso y observación)</h4>
+
+            <ul>
+                <li>🪖 Casco</li>
+                <li>🥽 Gafas</li>
+                <li>😷 Tapabocas</li>
+		<li>🧤 Guantes</li>
+		<li>🎧 Protector Auditivo</li>
+                <li>🤿 Careta</li>
+                <li>🥾 Botas</li>
+                <li>🦺 Chaleco</li>
+		<li>👖 Overol</li>
+            </ul>
+        </div>
+
+        <!-- ✅ BOTONES -->
+        <div class="btn-row">
+            <button class="btn btn-start small" onclick="startRecording()">▶️ Iniciar</button>
+            <button class="btn btn-stop small" onclick="stopRecording()">⛔ Detener</button>
+        </div>
 
         <p id="status">Estado: esperando...</p>
 
         <audio id="audioPlayback" controls></audio>
 
+        <!-- ✅ DESCARGA -->
         <a id="downloadLink" style="display:none;">
             <button class="btn btn-download">⬇️ Descargar audio</button>
         </a>
@@ -145,6 +213,13 @@ function stopRecording() {
         document.getElementById("status").innerText = "⏳ Procesando...";
     }
 }
+
+/* ✅ OCULTAR BOTÓN DESPUÉS DE DESCARGAR */
+document.querySelector("#downloadLink button").addEventListener("click", () => {
+    setTimeout(() => {
+        document.getElementById("downloadLink").style.display = "none";
+    }, 200);
+});
 </script>
 
 </body>
