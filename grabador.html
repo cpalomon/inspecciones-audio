@@ -1,114 +1,113 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grabador de Inspecciones</title>
+<title>Inspección EPP</title>
 
 <style>
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f6f8;
+    font-family: "Segoe UI", Arial;
+    background: #eef2f7;
     margin: 0;
     padding: 0;
-    text-align: center;
 }
 
 .container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
+    max-width: 420px;
+    margin: auto;
+    padding: 15px;
 }
 
 h1 {
-    font-size: 24px;
-    margin-bottom: 5px;
+    font-size: 20px;
+    margin-bottom: 2px;
+    text-align: center;
 }
 
-h3 {
-    font-size: 15px;
-    color: #666;
-    margin-bottom: 15px;
-}
-
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-}
-
-/* ✅ GUÍA */
-.guia {
-    text-align: left;
+.subtitle {
+    text-align: center;
+    color: #777;
     font-size: 13px;
     margin-bottom: 15px;
-    background: #f9fafb;
-    padding: 10px;
-    border-radius: 10px;
 }
 
-.guia h3 {
-    font-size: 14px;
-    margin-bottom: 5px;
+/* TARJETAS */
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0px 3px 8px rgba(0,0,0,0.08);
+    margin-bottom: 12px;
 }
 
-.guia h4 {
-    margin-top: 10px;
-    margin-bottom: 5px;
+/* TITULOS SECCION */
+.section-title {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #444;
 }
 
-.guia ul {
-    padding-left: 18px;
-    margin: 5px 0;
+/* CAMPOS */
+.field {
+    font-size: 13px;
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
 }
 
-.guia li {
-    margin-bottom: 4px;
-}
-
-/* ✅ BOTONES */
-.btn {
-    border: none;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-}
-
-.btn-start {
-    background-color: #28a745;
-}
-
-.btn-stop {
-    background-color: #dc3545;
-}
-
-.btn-download {
-    background-color: #007bff;
-    padding: 12px;
+/* TABLA MODERNA */
+.tabla-epp {
     width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
 }
 
+.tabla-epp th {
+    background: #f1f5f9;
+    color: #333;
+    padding: 6px;
+    font-weight: 600;
+}
+
+.tabla-epp td {
+    padding: 6px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.tabla-epp td:first-child {
+    text-align: left;
+}
+
+/* BOTONES */
 .btn-row {
     display: flex;
     gap: 8px;
-    margin-bottom: 10px;
 }
 
-.small {
-    padding: 10px;
-    font-size: 14px;
+.btn {
     flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 13px;
 }
+
+.btn-start { background: #28a745; }
+.btn-stop { background: #dc3545; }
+.btn-download { background: #007bff; width: 100%; margin-top: 10px; }
 
 #status {
-    margin: 12px 0;
-    font-size: 14px;
+    text-align: center;
+    margin: 10px 0;
+    font-size: 13px;
 }
 
 audio {
     width: 100%;
-    margin-top: 15px;
 }
 
 </style>
@@ -118,55 +117,135 @@ audio {
 
 <div class="container">
 
-    <h1>INSPECCIÓN AREA HSE</h1>
-    <h3>Ambiente y Soluciones SAS</h3>
+    <h1>INSPECCIONES AREA HSE</h1>
+    <div class="subtitle">Ambiente y Soluciones SAS</div>
 
+    <!-- DATOS GENERALES -->
     <div class="card">
+        <div class="section-title">DATOS DE INSPECCIÓN</div>
 
-        <!--GUÍA DE INSPECCIÓN -->
-        <div class="guia">
-            <h3>📝 GUÍA DE GRABACIÓN</h3>
+        <div class="field">📅 Fecha</div>
+        <div class="field">⏰ Hora</div>
+        <div class="field">🔍 Tipo de inspección</div>
+        <div class="field">📍 Ubicación</div>
+        <div class="field">🏢 Área</div>
+        <div class="field">🪪 Inspector (Documento)</div>
+        <div class="field">👷🏻‍♀️ Empleado (Documento)</div>
+    </div>
 
-            <ul>
-                <li>📅 Fecha</li>
-                <li>⏰ Hora</li>
-                <li>🔍 Tipo de inspección</li>
-                <li>📍 Ubicación</li>
-                <li>🏢 Área (Operativa)</li>
-                <li>🪪 Inspector (Documento)</li>
-                <li>👷🏻‍♀️ Empleado (Documento)</li>
-            </ul>
+    <!-- TABLA EPP -->
+    <div class="card">
+        <div class="section-title">ELEMENTOS DE PROTECCIÓN PERSONAL EPP</div>
 
-            <h4>Indicar por EPP (Estado, Uso y observación)</h4>
+        <table class="tabla-epp">
+            <tr>
+                <th>Elemento</th>
+                <th>Estado</th>
+                <th>Uso</th>
+                <th>Obs.</th>
+            </tr>
 
-            <ul>
-                <li>🪖 Casco</li>
-                <li>🥽 Gafas</li>
-                <li>😷 Tapabocas</li>
-		<li>🧤 Guantes</li>
-		<li>🎧 Protector Auditivo</li>
-                <li>🤿 Careta</li>
-                <li>🥾 Botas</li>
-                <li>🦺 Chaleco</li>
-		<li>👖 Overol</li>
-            </ul>
-        </div>
+            <tr>
+                <td>🪖 Casco</td>
+                <td>B/M/R</td>
+                <td>B/M/R</td>
+                <td>-</td>
+            </tr>
 
-        <!-- ✅ BOTONES -->
+            <tr>
+                <td>✔️ Barbuquejo</td>
+                <td>B/M/R</td>
+                <td>B/M/R</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>😷 Protector Respiratorio</td>
+                <td>B/M/R</td>
+                <td>B/M/R</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>🎧 Protector Auditivo</td>
+                <td>B/M/R</td>
+                <td>B/M/R</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>🥽 Gafas</td>
+                <td>B/M/R</td>
+                <td>B/M/R</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>🧤 Guantes Nitrilo</td>
+                <td>B/M/R</td>
+                <td>B/M/R</td>
+                <td>-</td>
+            </tr>
+
+	    <tr>
+                <td>🖐🏻 Guantes Combinados</td>
+                <td>B/M/R</td>
+                <td>B/M/R</td>
+                <td>-</td>
+            </tr>
+
+	    <tr>
+                <td>🎽 Peto</td>
+                <td>B/M/R</td>
+                <td>B/M/R</td>
+                <td>-</td>
+            </tr>
+
+	    <tr>
+                <td>👖 Pantalon</td>
+                <td>B/M/R</td>
+                <td>B/M/R</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>👕 Camisa</td>
+                <td>B/M/R</td>
+                <td>B/M/R</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td>🦺 Overol</td>
+                <td>B/M/R</td>
+                <td>B/M/R</td>
+                <td>-</td>
+            </tr>
+
+ 	    <tr>
+                <td>🥾 Botas</td>
+                <td>B/M/R</td>
+                <td>B/M/R</td>
+                <td>-</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ✅ GRABACIÓN -->
+    <div class="card">
+        <div class="section-title">GRABACIÓN</div>
+
         <div class="btn-row">
-            <button class="btn btn-start small" onclick="startRecording()">▶️ Iniciar</button>
-            <button class="btn btn-stop small" onclick="stopRecording()">⛔ Detener</button>
+            <button class="btn btn-start" onclick="startRecording()">▶️ Iniciar</button>
+            <button class="btn btn-stop" onclick="stopRecording()">⛔ Detener</button>
         </div>
 
         <p id="status">Estado: esperando...</p>
 
         <audio id="audioPlayback" controls></audio>
 
-        <!-- ✅ DESCARGA -->
         <a id="downloadLink" style="display:none;">
-            <button class="btn btn-download">⬇️ Descargar audio</button>
+            <button class="btn btn-download">⬇️ Descargar</button>
         </a>
-
     </div>
 
 </div>
@@ -178,29 +257,25 @@ let chunks = [];
 async function startRecording() {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-    const options = { mimeType: 'audio/webm;codecs=opus' };
-    mediaRecorder = new MediaRecorder(stream, options);
-
+    mediaRecorder = new MediaRecorder(stream);
     chunks = [];
 
     mediaRecorder.ondataavailable = e => {
-        if (e.data.size > 0) {
-            chunks.push(e.data);
-        }
+        if (e.data.size > 0) chunks.push(e.data);
     };
 
     mediaRecorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/webm' });
+        const blob = new Blob(chunks);
+        const url = URL.createObjectURL(blob);
 
-        const audioURL = URL.createObjectURL(blob);
-        document.getElementById("audioPlayback").src = audioURL;
+        document.getElementById("audioPlayback").src = url;
 
         const link = document.getElementById("downloadLink");
-        link.href = audioURL;
+        link.href = url;
         link.download = "inspeccion_" + Date.now() + ".webm";
         link.style.display = "block";
 
-        document.getElementById("status").innerText = "✅ Listo para descargar";
+        document.getElementById("status").innerText = "✅ Listo";
     };
 
     mediaRecorder.start();
@@ -214,7 +289,6 @@ function stopRecording() {
     }
 }
 
-/* ✅ OCULTAR BOTÓN DESPUÉS DE DESCARGAR */
 document.querySelector("#downloadLink button").addEventListener("click", () => {
     setTimeout(() => {
         document.getElementById("downloadLink").style.display = "none";
