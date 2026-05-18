@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -128,7 +127,6 @@ audio {
         <div class="field">⏰ Hora (AM/PM)</div>
         <div class="field">🔍 Tipo de inspección</div>
         <div class="field">📍 Ubicación</div>
-        <div class="field">🏢 Área</div>
         <div class="field">🪪 Inspector (Documento)</div>
         <div class="field">👷🏻‍♀️ Empleado (Documento)</div>
     </div>
@@ -172,6 +170,7 @@ audio {
                 <td>B/M/R</td>
                 <td>-</td>
             </tr>
+
             <tr>
                 <td>🥽 Gafas</td>
                 <td>B/M/R</td>
@@ -186,21 +185,21 @@ audio {
                 <td>-</td>
             </tr>
 
-	    <tr>
+            <tr>
                 <td>🖐🏻 Guantes Combinados</td>
                 <td>B/M/R</td>
                 <td>B/M/R</td>
                 <td>-</td>
             </tr>
 
-	    <tr>
+            <tr>
                 <td>🎽 Peto</td>
                 <td>B/M/R</td>
                 <td>B/M/R</td>
                 <td>-</td>
             </tr>
 
-	    <tr>
+            <tr>
                 <td>👖 Pantalon</td>
                 <td>B/M/R</td>
                 <td>B/M/R</td>
@@ -221,7 +220,7 @@ audio {
                 <td>-</td>
             </tr>
 
- 	    <tr>
+            <tr>
                 <td>🥾 Botas</td>
                 <td>B/M/R</td>
                 <td>B/M/R</td>
@@ -230,7 +229,7 @@ audio {
         </table>
     </div>
 
-    <!-- ✅ GRABACIÓN -->
+    <!-- GRABACIÓN -->
     <div class="card">
         <div class="section-title">GRABACIÓN</div>
 
@@ -251,49 +250,104 @@ audio {
 </div>
 
 <script>
+
 let mediaRecorder;
 let chunks = [];
 
+// CONTADOR PARA LOS NOMBRES
+let contador = parseInt(
+    localStorage.getItem("contadorAudio")
+) || 1;
+
 async function startRecording() {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true
+    });
 
     mediaRecorder = new MediaRecorder(stream);
+
     chunks = [];
 
     mediaRecorder.ondataavailable = e => {
-        if (e.data.size > 0) chunks.push(e.data);
+        if (e.data.size > 0){
+            chunks.push(e.data);
+        }
     };
 
     mediaRecorder.onstop = () => {
-        const blob = new Blob(chunks);
+
+        const blob = new Blob(chunks,{
+            type:"audio/webm"
+        });
+
         const url = URL.createObjectURL(blob);
 
-        document.getElementById("audioPlayback").src = url;
+        document.getElementById(
+            "audioPlayback"
+        ).src = url;
 
-        const link = document.getElementById("downloadLink");
+        const link = document.getElementById(
+            "downloadLink"
+        );
+
+        // NOMBRE AUTOMÁTICO
+        const nombreArchivo =
+        `INSPECCION${contador}.webm`;
+
         link.href = url;
-        link.download = "inspeccion_" + Date.now() + ".webm";
+        link.download = nombreArchivo;
         link.style.display = "block";
 
-        document.getElementById("status").innerText = "✅ Listo";
+        // GUARDAR CONTADOR
+        contador++;
+
+        localStorage.setItem(
+            "contadorAudio",
+            contador
+        );
+
+        document.getElementById(
+            "status"
+        ).innerText = "✅ Listo";
     };
 
     mediaRecorder.start();
-    document.getElementById("status").innerText = "🔴 Grabando...";
+
+    document.getElementById(
+        "status"
+    ).innerText = "🔴 Grabando...";
 }
 
 function stopRecording() {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+
+    if (
+        mediaRecorder &&
+        mediaRecorder.state !== "inactive"
+    ) {
+
         mediaRecorder.stop();
-        document.getElementById("status").innerText = "⏳ Procesando...";
+
+        document.getElementById(
+            "status"
+        ).innerText =
+        "⏳ Procesando...";
     }
 }
 
-document.querySelector("#downloadLink button").addEventListener("click", () => {
-    setTimeout(() => {
-        document.getElementById("downloadLink").style.display = "none";
-    }, 200);
-});
+document.querySelector(
+    "#downloadLink button"
+).addEventListener(
+    "click",
+    () => {
+        setTimeout(() => {
+            document.getElementById(
+                "downloadLink"
+            ).style.display = "none";
+        }, 200);
+    }
+);
+
 </script>
 
 </body>
